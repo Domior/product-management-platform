@@ -1,8 +1,7 @@
-// pages/_app.tsx
-
 import type { AppProps } from 'next/app';
 import { AuthLayout } from '@/components/layouts/AuthLayout';
 import { MainLayout } from '@/components/layouts/MainLayout';
+import { Toaster } from '@/components/ui/toaster';
 
 import '@/styles/globals.css';
 
@@ -21,7 +20,12 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
 
   const layout = getLayout();
 
-  return layout(<Component {...pageProps} />);
+  return layout(
+    <>
+      <Component {...pageProps} />
+      <Toaster />
+    </>,
+  );
 };
 
 export default MyApp;
