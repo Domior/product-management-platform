@@ -1,30 +1,47 @@
+import { useEffect, useCallback, useMemo } from 'react';
 import type { AppProps } from 'next/app';
+
 import { AuthLayout } from '@/components/layouts/AuthLayout';
 import { MainLayout } from '@/components/layouts/MainLayout';
 import { Toaster } from '@/components/ui/toaster';
 
+import { useAuth } from '@/hooks/useAuth';
+import { AUTH_ROUTES, APP_ROUTES } from '@/constants/routes';
+
 import '@/styles/globals.css';
 
 const MyApp = ({ Component, pageProps, router }: AppProps) => {
-  const getLayout = () => {
-    if (router.pathname.startsWith('/auth/')) {
-      const Layout = (page: React.ReactNode) => <AuthLayout>{page}</AuthLayout>;
-      Layout.displayName = 'AuthLayout';
-      return Layout;
-    } else {
-      const Layout = (page: React.ReactNode) => <MainLayout>{page}</MainLayout>;
-      Layout.displayName = 'MainLayout';
-      return Layout;
+  const { authenticated } = useAuth();
+
+  const isAuthPath = router.pathname.startsWith(AUTH_ROUTES.AUTH);
+
+  const routes = Object.values(APP_ROUTES);
+  const isAppPath = routes.includes(router.pathname);
+
+  const Layout = isAuthPath ? AuthLayout : MainLayout;
+
+  const checkAuth = useCallback(() => {
+    if (authenticated && !isAppPath) {
+      router.replace(APP_ROUTES.PRODUCTS);
+      return;
     }
-  };
 
-  const layout = getLayout();
+    if (!authenticated && !isAuthPath) {
+      router.replace(AUTH_ROUTES.LOGIN);
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authenticated, router]);
 
-  return layout(
-    <>
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  return (
+    <Layout>
       <Component {...pageProps} />
       <Toaster />
-    </>,
+    </Layout>
   );
 };
 

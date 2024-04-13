@@ -18,3 +18,8 @@ export interface SignupReturnType extends SignoutReturnType {
 export interface LoginReturnType extends SignupReturnType {
   session: Session | null;
 }
+
+export interface GetSessionReturnType {
+  error: AuthError | null;
+  session: Session | null;
+}

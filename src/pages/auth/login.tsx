@@ -14,7 +14,7 @@ import { PageTitle } from '@/components/PageTitle';
 import AuthService from '@/services/AuthService';
 import SupabaseService from '@/services/SupabaseService';
 import { useAsync } from '@/hooks/useAsync';
-import { ROUTES } from '@/constants/routes';
+import { AUTH_ROUTES, APP_ROUTES } from '@/constants/routes';
 import { LoginType, LoginReturnType } from '@/types/auth';
 
 import { loginSchema } from './form';
@@ -35,7 +35,7 @@ const Login = () => {
   useEffect(() => {
     if (data && !error) {
       SupabaseService.setSession(data.session!).then(() => {
-        Router.push(ROUTES.PRODUCTS);
+        Router.push(APP_ROUTES.PRODUCTS);
       });
     }
   }, [data, error]);
@@ -76,7 +76,7 @@ const Login = () => {
                   </FormItem>
                 )}
               />
-              <Link href={ROUTES.SIGNUP} className="inline-block w-full text-center underline">
+              <Link href={AUTH_ROUTES.SIGNUP} className="inline-block w-full text-center underline">
                 Don`t have an account?
               </Link>
               <div className="flex justify-center">

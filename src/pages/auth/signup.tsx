@@ -14,7 +14,7 @@ import { PageTitle } from '@/components/PageTitle';
 
 import AuthService from '@/services/AuthService';
 import { useAsync } from '@/hooks/useAsync';
-import { ROUTES } from '@/constants/routes';
+import { AUTH_ROUTES } from '@/constants/routes';
 import { ROLES } from '@/constants/roles';
 import { SignupType, SignupReturnType } from '@/types/auth';
 import { signupSchema } from './form';
@@ -37,7 +37,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (data && !error) {
-      Router.push(ROUTES.LOGIN);
+      Router.push(AUTH_ROUTES.LOGIN);
     }
   }, [data, error]);
 
@@ -112,7 +112,7 @@ const Signup = () => {
                   </FormItem>
                 )}
               />
-              <Link href={ROUTES.LOGIN} className="inline-block w-full text-center underline">
+              <Link href={AUTH_ROUTES.LOGIN} className="inline-block w-full text-center underline">
                 Have an account?
               </Link>
               <div className="flex justify-center">

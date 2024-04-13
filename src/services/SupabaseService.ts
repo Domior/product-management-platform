@@ -1,8 +1,8 @@
 import { LoginType, SignupType } from '@/types/auth';
-import { Session } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 
 import { supabase } from '@/utils/supabaseClient';
-import { SignoutReturnType, SignupReturnType, LoginReturnType } from '@/types/auth';
+import { SignoutReturnType, SignupReturnType, LoginReturnType, GetSessionReturnType } from '@/types/auth';
 
 class SupabaseService {
   async login({ email, password }: LoginType): Promise<LoginReturnType> {
@@ -45,6 +45,23 @@ class SupabaseService {
     });
 
     return { user, session, error };
+  }
+
+  async getSession(): Promise<GetSessionReturnType> {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+
+    return { session, error };
+  }
+
+  async getUser(): Promise<User | null> {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    return user;
   }
 }
 
