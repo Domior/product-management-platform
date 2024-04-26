@@ -11,7 +11,7 @@ const signoutHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (error) return handleSupabaseError(error, res);
 
-  res.status(STATUS_CODES.NO_CONTENT).end();
+  res.status(STATUS_CODES.OK).json({ message: 'Sign out successful' });
 };
 
 export default apiHandler({

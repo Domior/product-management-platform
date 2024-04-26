@@ -15,9 +15,12 @@ import AuthService from '@/services/AuthService';
 import SupabaseService from '@/services/SupabaseService';
 import { useAsync } from '@/hooks/useAsync';
 import { AUTH_ROUTES, APP_ROUTES } from '@/constants/routes';
+import { COOKIES } from '@/constants/cookies';
 import { LoginType, LoginReturnType } from '@/types/auth';
 
 import { loginSchema } from './form';
+
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const { data, error, loading, execute } = useAsync<LoginReturnType, LoginType>(AuthService.login);
@@ -35,6 +38,7 @@ const Login = () => {
   useEffect(() => {
     if (data && !error) {
       SupabaseService.setSession(data.session!).then(() => {
+        Cookies.set(COOKIES.TOKEN, data.session!.access_token);
         Router.push(APP_ROUTES.PRODUCTS);
       });
     }

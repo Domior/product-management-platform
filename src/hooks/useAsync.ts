@@ -9,7 +9,7 @@ interface AsyncState<T> {
   loading: boolean;
 }
 
-export const useAsync = <T, K>(asyncFunction: (body: K) => Promise<T>) => {
+export const useAsync = <T, K = void>(asyncFunction: (body: K) => Promise<T>) => {
   const { toast } = useToast();
 
   const [state, setState] = useState<AsyncState<T>>({
