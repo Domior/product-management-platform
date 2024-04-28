@@ -24,8 +24,10 @@ export const useAsync = <T, K = void>(asyncFunction: (body: K) => Promise<T>) =>
       try {
         const data = await asyncFunction(body);
         setState({ data, error: null, loading: false });
+        const message = (data as any).message;
+        if (!message) return;
         toast({
-          title: (data as any).message,
+          title: message,
         });
       } catch (error) {
         const errorMessage = getErrorMessage(error);

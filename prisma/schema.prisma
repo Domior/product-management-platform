@@ -28,27 +28,29 @@ model User {
 }
 
 model Product {
-  id                  Int                   @id @default(autoincrement())
-  title               String
-  description         String
-  price               Float
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  CategoriesOnProduct CategoriesOnProduct[]
-  TagsOnProduct       TagsOnProduct[]
-  ImageOnProduct      ImagesOnProduct[]
+  id          Int                   @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  categories  CategoriesOnProduct[]
+  tags        TagsOnProduct[]
+  images      ImagesOnProduct[]
 }
 
 model Category {
-  id                  Int                   @id @default(autoincrement())
-  name                String
-  CategoriesOnProduct CategoriesOnProduct[]
+  id         Int                   @id @default(autoincrement())
+  label      String
+  value      String
+  categories CategoriesOnProduct[]
 }
 
 model Tag {
-  id            Int             @id @default(autoincrement())
-  name          String
-  TagsOnProduct TagsOnProduct[]
+  id    Int             @id @default(autoincrement())
+  label String
+  value String
+  tags  TagsOnProduct[]
 }
 
 model CategoriesOnProduct {
@@ -70,10 +72,10 @@ model TagsOnProduct {
 }
 
 model Image {
-  id             Int               @id @default(autoincrement())
-  url            String
-  contentType    String
-  ImageOnProduct ImagesOnProduct[]
+  id          Int               @id @default(autoincrement())
+  url         String
+  contentType String
+  images      ImagesOnProduct[]
 }
 
 model ImagesOnProduct {

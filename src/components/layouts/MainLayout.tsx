@@ -15,7 +15,7 @@ export const MainLayout = ({
       <div className="w-full h-full">
         <Header />
 
-        <div className="py-6 container">{children}</div>
+        <div className="py-6 container max-w-none">{children}</div>
       </div>
     </div>
   );

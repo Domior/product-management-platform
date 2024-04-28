@@ -8,16 +8,17 @@ import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-type Item = {
+type Option = {
+  id: number;
   value: string;
   label: string;
 };
 
 type Props = {
-  items: Item[];
+  options: Option[];
 };
 
-export function Combobox({ items }: Props) {
+export function Combobox({ options }: Props) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
 
@@ -25,7 +26,7 @@ export function Combobox({ items }: Props) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className="w-[200px] justify-between">
-          {value ? items.find(item => item.value === value)?.label : 'Select...'}
+          {value ? options.find(option => option.value === value)?.label : 'Select...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -34,17 +35,17 @@ export function Combobox({ items }: Props) {
           <CommandInput placeholder="Search..." />
           <CommandEmpty>Nothing found.</CommandEmpty>
           <CommandGroup>
-            {items.map(item => (
+            {options.map(option => (
               <CommandItem
-                key={item.value}
-                value={item.value}
+                key={option.value}
+                value={option.value}
                 onSelect={currentValue => {
                   setValue(currentValue === value ? '' : currentValue);
                   setOpen(false);
                 }}
               >
-                <Check className={cn('mr-2 h-4 w-4', value === item.value ? 'opacity-100' : 'opacity-0')} />
-                {item.label}
+                <Check className={cn('mr-2 h-4 w-4', value === option.value ? 'opacity-100' : 'opacity-0')} />
+                {option.label}
               </CommandItem>
             ))}
           </CommandGroup>
