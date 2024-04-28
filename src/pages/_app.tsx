@@ -1,27 +1,26 @@
-// pages/_app.tsx
-
+import React from 'react';
 import type { AppProps } from 'next/app';
 import { AuthLayout } from '@/components/layouts/AuthLayout';
 import { MainLayout } from '@/components/layouts/MainLayout';
+import { Toaster } from '@/components/ui/toaster';
+
+import { AUTH_ROUTES } from '@/constants/routes';
 
 import '@/styles/globals.css';
 
 const MyApp = ({ Component, pageProps, router }: AppProps) => {
-  const getLayout = () => {
-    if (router.pathname.startsWith('/auth/')) {
-      const Layout = (page: React.ReactNode) => <AuthLayout>{page}</AuthLayout>;
-      Layout.displayName = 'AuthLayout';
-      return Layout;
-    } else {
-      const Layout = (page: React.ReactNode) => <MainLayout>{page}</MainLayout>;
-      Layout.displayName = 'MainLayout';
-      return Layout;
-    }
-  };
+  if (typeof window === 'undefined') React.useLayoutEffect = React.useEffect;
 
-  const layout = getLayout();
+  const isAuthPath = router.pathname.startsWith(AUTH_ROUTES.AUTH);
 
-  return layout(<Component {...pageProps} />);
+  const Layout = isAuthPath ? AuthLayout : MainLayout;
+
+  return (
+    <Layout>
+      <Component {...pageProps} />
+      <Toaster />
+    </Layout>
+  );
 };
 
 export default MyApp;
