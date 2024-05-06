@@ -2,11 +2,11 @@ import { Product } from '@prisma/client';
 import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
 
 import baseInstance from './baseInstance';
-
-import { ProductType, ProductReturnType } from '@/types/product';
+import { PaginatedResponse } from '@/types/response';
+import { ProductType } from '@/types/product';
 
 class ProductService {
-  async getProducts(params: any): Promise<Product[]> {
+  async getProducts(params: any): Promise<PaginatedResponse<Product>> {
     return await baseInstance.get(APP_ROUTES.PRODUCTS, { params });
   }
   async createProduct(body: ProductType): Promise<Product> {

@@ -7,7 +7,7 @@ import { handleSupabaseError } from '@/utils/supabaseErrorHandler';
 import { HTTP_METHODS } from '@/constants/httpMethods';
 import { STATUS_CODES } from '@/constants/statusCodes';
 import { PaginatedResponse } from '@/types/response';
-import { ProductType, ProductReturnType } from '@/types/product';
+import { ProductType } from '@/types/product';
 
 const create = async (req: NextApiRequest, res: NextApiResponse) => {
   const { title, description, price, categories, tags } = req.body as ProductType;
