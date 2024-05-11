@@ -25,6 +25,7 @@ interface MultiSelectorComponentProps {
   placeholder: string;
   loop?: boolean;
   options: Option[];
+  wrapperClassName?: string;
 }
 
 interface MultiSelectContextProps {
@@ -252,9 +253,9 @@ const MultiSelectorItem = forwardRef<React.ElementRef<typeof CommandPrimitive.It
 
 MultiSelectorItem.displayName = 'MultiSelectorItem';
 
-const MultiSelectorComponent = ({ options, value, onSetValue, placeholder, loop = false }: MultiSelectorComponentProps) => {
+const MultiSelectorComponent = ({ options, value, onSetValue, placeholder, wrapperClassName, loop = false }: MultiSelectorComponentProps) => {
   return (
-    <MultiSelector values={value} onValuesChange={onSetValue} loop={loop}>
+    <MultiSelector values={value} onValuesChange={onSetValue} loop={loop} className={wrapperClassName}>
       <MultiSelectorTrigger>
         <MultiSelectorInput placeholder={placeholder} />
       </MultiSelectorTrigger>

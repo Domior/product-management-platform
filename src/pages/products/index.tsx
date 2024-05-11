@@ -19,7 +19,7 @@ import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
 import { ProductType } from '@/types/product';
 
 const Products = () => {
-  const [searchValue, setSearchValue] = useState(null);
+  const [searchValue, setSearchValue] = useState('');
   const [categoryValue, setCategoryValue] = useState<string[]>([]);
   const [tagValue, setTagValue] = useState<string[]>([]);
 
@@ -46,16 +46,24 @@ const Products = () => {
         <Title>Products</Title>
         <Button onClick={() => Router.push(`${APP_ROUTES.PRODUCTS}${ADDITIONAL_ROUTES.CREATE}`)}>Create product</Button>
       </div>
-      <div className="flex items-center justify-between">
-        <Input type="search" placeholder="Search" value={searchValue} onChange={e => setSearchValue(e.target.value)} />
+      <div className="flex items-center justify-start gap-x-5">
+        <Input type="search" placeholder="Search" value={searchValue} onChange={e => setSearchValue(e.target.value)} className="max-w-[300px]" />
         {!loadingCategories && dataCategories && (
-          <MultiSelectorComponent value={categoryValue} onSetValue={setCategoryValue} options={dataCategories} placeholder="Select categories" />
+          <MultiSelectorComponent
+            value={categoryValue}
+            onSetValue={setCategoryValue}
+            options={dataCategories}
+            placeholder="Select categories"
+            wrapperClassName="max-w-[200px]"
+          />
         )}
-        {!loadingTags && dataTags && <MultiSelectorComponent value={tagValue} onSetValue={setTagValue} options={dataTags} placeholder="Select tags" />}
+        {!loadingTags && dataTags && (
+          <MultiSelectorComponent value={tagValue} onSetValue={setTagValue} options={dataTags} placeholder="Select tags" wrapperClassName="max-w-[200px]" />
+        )}
       </div>
 
       {!isLoading && data ? (
-        <div className="flex gap-4">
+        <div className="mt-5 flex gap-4">
           {!!data.results.length ? (
             data.results.map(product => (
               <Card key={product.id}>
@@ -74,7 +82,9 @@ const Products = () => {
               </Card>
             ))
           ) : (
-            <p>No products</p>
+            <div className="mt-20 w-full flex justify-center">
+              <p>No products</p>
+            </div>
           )}
         </div>
       ) : (

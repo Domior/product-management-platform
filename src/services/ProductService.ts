@@ -3,10 +3,10 @@ import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
 
 import baseInstance from './baseInstance';
 import { PaginatedResponse } from '@/types/response';
-import { ProductType } from '@/types/product';
+import { ProductType, GetProductsParamsType } from '@/types/product';
 
 class ProductService {
-  async getProducts(params: any): Promise<PaginatedResponse<Product>> {
+  async getProducts(params: GetProductsParamsType): Promise<PaginatedResponse<Product>> {
     return await baseInstance.get(APP_ROUTES.PRODUCTS, { params });
   }
   async createProduct(body: ProductType): Promise<Product> {
