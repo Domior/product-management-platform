@@ -16,19 +16,20 @@ import TagService from '@/services/TagService';
 import ProductService from '@/services/ProductService';
 import { useAsync } from '@/hooks/useAsync';
 import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
-import { ProductType } from '@/types/product';
+import { useDebounce } from '@/hooks/useDebounce';
 
 const Products = () => {
   const [searchValue, setSearchValue] = useState('');
   const [categoryValue, setCategoryValue] = useState<string[]>([]);
   const [tagValue, setTagValue] = useState<string[]>([]);
+  const debouncedSearchValue = useDebounce(searchValue, 500);
 
   const { data: dataCategories, loading: loadingCategories, execute: executeCategories } = useAsync<Category[]>(CategoryService.getCategories);
   const { data: dataTags, loading: loadingTags, execute: executeTags } = useAsync<Tag[]>(TagService.getTags);
 
   const { isLoading, data } = useQuery({
-    queryKey: ['products', searchValue, categoryValue, tagValue],
-    queryFn: async () => await ProductService.getProducts({ search: searchValue, categories: categoryValue, tags: tagValue, page: 1, limit: 10 }),
+    queryKey: ['products', debouncedSearchValue, categoryValue, tagValue],
+    queryFn: async () => await ProductService.getProducts({ search: debouncedSearchValue, categories: categoryValue, tags: tagValue, page: 1, limit: 10 }),
   });
 
   useEffect(() => {
