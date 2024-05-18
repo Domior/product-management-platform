@@ -10,13 +10,15 @@ import { Input } from '@/components/ui/input';
 import { PageTitle } from '@/components/PageTitle';
 import { Title } from '@/components/Title';
 import { MultiSelectorComponent } from '@/components/ui/multi-select';
-
+import Pagination from '@/components/Pagination';
 import CategoryService from '@/services/CategoryService';
 import TagService from '@/services/TagService';
 import ProductService from '@/services/ProductService';
 import { useAsync } from '@/hooks/useAsync';
 import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
 import { useDebounce } from '@/hooks/useDebounce';
+
+const ITEMS_PER_PAGE = 10;
 
 const Products = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -64,24 +66,29 @@ const Products = () => {
       </div>
 
       {!isLoading && data ? (
-        <div className="mt-5 flex gap-4">
+        <div className="mt-5 ">
           {!!data.results.length ? (
-            data.results.map(product => (
-              <Card key={product.id}>
-                <CardContent className="pt-6">
-                  <CardTitle>{product.title}</CardTitle>
-                  <CardDescription>{product.description}</CardDescription>
-                </CardContent>
-                <CardFooter className="gap-x-2">
-                  <Button className="w-1/2" variant="secondary">
-                    Edit
-                  </Button>
-                  <Button className="w-1/2" variant="destructive">
-                    Delete
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))
+            <>
+              <div className="flex gap-4">
+                {data.results.map(product => (
+                  <Card key={product.id}>
+                    <CardContent className="pt-6">
+                      <CardTitle>{product.title}</CardTitle>
+                      <CardDescription>{product.description}</CardDescription>
+                    </CardContent>
+                    <CardFooter className="gap-x-2">
+                      <Button className="w-1/2" variant="secondary">
+                        Edit
+                      </Button>
+                      <Button className="w-1/2" variant="destructive">
+                        Delete
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+              <Pagination className="mt-10" limit={ITEMS_PER_PAGE} total={data.total} />
+            </>
           ) : (
             <div className="mt-20 w-full flex justify-center">
               <p>No products</p>
