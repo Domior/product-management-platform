@@ -14,4 +14,5 @@ export const ADDITIONAL_ROUTES = {
   TAGS: '/tags',
   CATEGORIES: '/categories',
   CREATE: '/create',
+  EDIT: '/edit',
 };

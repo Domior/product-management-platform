@@ -19,7 +19,7 @@ import ProductService from '@/services/ProductService';
 import { useAsync } from '@/hooks/useAsync';
 import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
 import { useDebounce } from '@/hooks/useDebounce';
-import { ITEMS_PER_PAGE, LIST_QUERY_KEY } from '@/constants/products';
+import { ITEMS_PER_PAGE, QUERY_KEYS } from '@/constants/products';
 
 const Products = () => {
   const queryClient = useQueryClient();
@@ -35,13 +35,13 @@ const Products = () => {
   const { loading: loadingDelete, execute: executeDelete } = useAsync<Product, number>(ProductService.deleteProduct);
 
   const { isLoading, data } = useQuery({
-    queryKey: [LIST_QUERY_KEY, debouncedSearchValue, categoryValue, tagValue],
+    queryKey: [QUERY_KEYS.PRODUCTS_LIST, debouncedSearchValue, categoryValue, tagValue],
     queryFn: async () => await ProductService.getProducts({ search: debouncedSearchValue, categories: categoryValue, tags: tagValue, page: 1, limit: ITEMS_PER_PAGE }),
   });
 
   const handleProductDelete = async (id: number) => {
     await executeDelete(id);
-    queryClient.invalidateQueries({ queryKey: [LIST_QUERY_KEY] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS_LIST] });
   };
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const Products = () => {
                       <CardDescription>{product.description}</CardDescription>
                     </CardContent>
                     <CardFooter className="gap-x-2">
-                      <Button className="w-1/2" variant="secondary">
+                      <Button className="w-1/2" variant="secondary" onClick={() => Router.push(`${APP_ROUTES.PRODUCTS}/${product.id}${ADDITIONAL_ROUTES.EDIT}`)}>
                         Edit
                       </Button>
                       <Dialog>
