@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Router from 'next/router';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Product, Category, Tag } from '@prisma/client';
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { LoadingButton } from '@/components/ui/loading-button';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
 import { PageTitle } from '@/components/PageTitle';
 import { Title } from '@/components/Title';
 import { MultiSelectorComponent } from '@/components/ui/multi-select';
@@ -17,10 +19,11 @@ import ProductService from '@/services/ProductService';
 import { useAsync } from '@/hooks/useAsync';
 import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
 import { useDebounce } from '@/hooks/useDebounce';
-
-const ITEMS_PER_PAGE = 10;
+import { ITEMS_PER_PAGE, LIST_QUERY_KEY } from '@/constants/products';
 
 const Products = () => {
+  const queryClient = useQueryClient();
+
   const [searchValue, setSearchValue] = useState('');
   const [categoryValue, setCategoryValue] = useState<string[]>([]);
   const [tagValue, setTagValue] = useState<string[]>([]);
@@ -29,10 +32,17 @@ const Products = () => {
   const { data: dataCategories, loading: loadingCategories, execute: executeCategories } = useAsync<Category[]>(CategoryService.getCategories);
   const { data: dataTags, loading: loadingTags, execute: executeTags } = useAsync<Tag[]>(TagService.getTags);
 
+  const { loading: loadingDelete, execute: executeDelete } = useAsync<Product, number>(ProductService.deleteProduct);
+
   const { isLoading, data } = useQuery({
-    queryKey: ['products', debouncedSearchValue, categoryValue, tagValue],
-    queryFn: async () => await ProductService.getProducts({ search: debouncedSearchValue, categories: categoryValue, tags: tagValue, page: 1, limit: 10 }),
+    queryKey: [LIST_QUERY_KEY, debouncedSearchValue, categoryValue, tagValue],
+    queryFn: async () => await ProductService.getProducts({ search: debouncedSearchValue, categories: categoryValue, tags: tagValue, page: 1, limit: ITEMS_PER_PAGE }),
   });
+
+  const handleProductDelete = async (id: number) => {
+    await executeDelete(id);
+    queryClient.invalidateQueries({ queryKey: [LIST_QUERY_KEY] });
+  };
 
   useEffect(() => {
     executeCategories();
@@ -80,9 +90,29 @@ const Products = () => {
                       <Button className="w-1/2" variant="secondary">
                         Edit
                       </Button>
-                      <Button className="w-1/2" variant="destructive">
-                        Delete
-                      </Button>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button className="w-1/2" variant="destructive">
+                            Delete
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                          <DialogHeader>
+                            <DialogTitle>Delete product</DialogTitle>
+                            <DialogDescription>Are you sure to delete this product?</DialogDescription>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <DialogClose asChild>
+                              <Button type="button" variant="secondary">
+                                Cancel
+                              </Button>
+                            </DialogClose>
+                            <LoadingButton type="submit" variant="destructive" loading={loadingDelete} onClick={() => handleProductDelete(product.id)}>
+                              Delete
+                            </LoadingButton>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                     </CardFooter>
                   </Card>
                 ))}

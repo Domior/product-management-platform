@@ -1,12 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Product } from '@prisma/client';
+
 import { prisma } from '@/utils/prismaClient';
-import SupabaseService from '@/services/SupabaseService';
 import { apiHandler } from '@/utils/apiHandler';
-import { handleSupabaseError } from '@/utils/supabaseErrorHandler';
 import { HTTP_METHODS } from '@/constants/httpMethods';
 import { STATUS_CODES } from '@/constants/statusCodes';
-import { PaginatedResponse } from '@/types/response';
 import { ProductType } from '@/types/product';
 
 const create = async (req: NextApiRequest, res: NextApiResponse) => {

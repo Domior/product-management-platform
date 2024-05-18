@@ -15,7 +15,7 @@ class ProductService {
   async editProduct(id: number, body: any): Promise<any> {
     return await baseInstance.put(`${APP_ROUTES.PRODUCTS}/${id}`, body);
   }
-  async deleteProduct(id: number): Promise<any> {
+  async deleteProduct(id: number): Promise<Product> {
     return await baseInstance.delete(`${APP_ROUTES.PRODUCTS}/${id}`);
   }
 }
