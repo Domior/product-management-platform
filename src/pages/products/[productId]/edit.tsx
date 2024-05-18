@@ -46,8 +46,6 @@ const EditProduct = () => {
   const [categoryValue, setCategoryValue] = useState<string[]>([]);
   const [tagValue, setTagValue] = useState<string[]>([]);
 
-  console.log(categoryValue);
-
   const form = useForm<ProductType>({
     resolver: zodResolver(editProductSchema),
   });
