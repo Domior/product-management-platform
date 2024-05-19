@@ -7,6 +7,8 @@ import { apiHandler } from '@/utils/apiHandler';
 import { handleSupabaseError } from '@/utils/supabaseErrorHandler';
 import { HTTP_METHODS } from '@/constants/httpMethods';
 import { STATUS_CODES } from '@/constants/statusCodes';
+import { USER_INITIAL_PERMISSIONS } from '@/constants/users';
+import { ROLES } from '@/constants/roles';
 
 const signupHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, password, displayName, role } = req.body;
@@ -15,12 +17,21 @@ const signupHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (error) return handleSupabaseError(error, res);
 
+  const allPermissions = await prisma.userPermission.findMany();
+
+  const userPermissions = role === ROLES.ADMIN ? allPermissions : allPermissions.filter(permission => USER_INITIAL_PERMISSIONS.includes(permission.value));
+
   await prisma.user.create({
     data: {
       email,
       role,
       displayName,
       createdAt: user?.created_at,
+      permissions: {
+        create: userPermissions.map(permission => ({
+          permissionId: permission.id,
+        })),
+      },
     },
   });
 

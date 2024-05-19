@@ -7,6 +7,7 @@ export const AUTH_ROUTES = {
 };
 
 export const APP_ROUTES = {
+  USERS: '/users',
   PRODUCTS: '/products',
 };
 
@@ -16,3 +17,5 @@ export const ADDITIONAL_ROUTES = {
   CREATE: '/create',
   EDIT: '/edit',
 };
+
+export const ADMIN_ROUTES = [APP_ROUTES.USERS];
