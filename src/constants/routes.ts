@@ -9,3 +9,9 @@ export const AUTH_ROUTES = {
 export const APP_ROUTES = {
   PRODUCTS: '/products',
 };
+
+export const ADDITIONAL_ROUTES = {
+  TAGS: '/tags',
+  CATEGORIES: '/categories',
+  CREATE: '/create',
+};

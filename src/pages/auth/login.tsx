@@ -3,6 +3,7 @@ import Router from 'next/router';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
 
 import { LoadingButton } from '@/components/ui/loading-button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -19,8 +20,6 @@ import { COOKIES } from '@/constants/cookies';
 import { LoginType, LoginReturnType } from '@/types/auth';
 
 import { loginSchema } from './form';
-
-import Cookies from 'js-cookie';
 
 const Login = () => {
   const { data, error, loading, execute } = useAsync<LoginReturnType, LoginType>(AuthService.login);
