@@ -2,20 +2,23 @@ import { Product } from '@prisma/client';
 import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
 
 import baseInstance from './baseInstance';
-
-import { ProductType, ProductReturnType } from '@/types/product';
+import { PaginatedResponse } from '@/types/response';
+import { ProductType, ProductFull, GetProductsParamsType, EditProductType } from '@/types/product';
 
 class ProductService {
-  async getProducts(params: any): Promise<Product[]> {
+  async getProducts(params: GetProductsParamsType): Promise<PaginatedResponse<Product>> {
     return await baseInstance.get(APP_ROUTES.PRODUCTS, { params });
+  }
+  async getOneProduct(id: number): Promise<ProductFull> {
+    return await baseInstance.get(`${APP_ROUTES.PRODUCTS}/${id}`);
   }
   async createProduct(body: ProductType): Promise<Product> {
     return await baseInstance.post(`${APP_ROUTES.PRODUCTS}${ADDITIONAL_ROUTES.CREATE}`, body);
   }
-  async editProduct(id: number, body: any): Promise<any> {
-    return await baseInstance.put(`${APP_ROUTES.PRODUCTS}/${id}`, body);
+  async editProduct({ id, body }: EditProductType): Promise<Product> {
+    return await baseInstance.put(`${APP_ROUTES.PRODUCTS}/${id}${ADDITIONAL_ROUTES.EDIT}`, body);
   }
-  async deleteProduct(id: number): Promise<any> {
+  async deleteProduct(id: number): Promise<Product> {
     return await baseInstance.delete(`${APP_ROUTES.PRODUCTS}/${id}`);
   }
 }

@@ -9,3 +9,11 @@ export const createProductSchema = z
     price: priceValidation,
   })
   .required();
+
+export const editProductSchema = z
+  .object({
+    title: titleValidation,
+    description: descriptionValidation,
+    price: priceValidation,
+  })
+  .required();
