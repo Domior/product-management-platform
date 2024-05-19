@@ -92,7 +92,7 @@ const EditProduct = () => {
     }
   }, [data, error]);
 
-  if (isLoading && !productData)
+  if (isLoading)
     return (
       <div className="mt-10 flex items-center justify-center">
         <LoadingSpinner size={40} />
