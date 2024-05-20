@@ -20,6 +20,7 @@ import { useAsync } from '@/hooks/useAsync';
 import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
 import { useDebounce } from '@/hooks/useDebounce';
 import { ITEMS_PER_PAGE, QUERY_KEYS } from '@/constants/products';
+import { usePagination } from '@/hooks/usePagination';
 
 const Products = () => {
   const queryClient = useQueryClient();
@@ -34,9 +35,12 @@ const Products = () => {
 
   const { loading: loadingDelete, execute: executeDelete } = useAsync<Product, number>(ProductService.deleteProduct);
 
+  const { currentPage, paginate, handleNextClick, handlePrevClick } = usePagination();
+
   const { isLoading, data } = useQuery({
-    queryKey: [QUERY_KEYS.PRODUCTS_LIST, debouncedSearchValue, categoryValue, tagValue],
-    queryFn: async () => await ProductService.getProducts({ search: debouncedSearchValue, categories: categoryValue, tags: tagValue, page: 1, limit: ITEMS_PER_PAGE }),
+    queryKey: [QUERY_KEYS.PRODUCTS_LIST, debouncedSearchValue, categoryValue, tagValue, currentPage],
+    queryFn: async () =>
+      await ProductService.getProducts({ search: debouncedSearchValue, categories: categoryValue, tags: tagValue, page: currentPage, limit: ITEMS_PER_PAGE }),
   });
 
   const handleProductDelete = async (id: number) => {
@@ -117,7 +121,15 @@ const Products = () => {
                   </Card>
                 ))}
               </div>
-              <Pagination className="mt-10" limit={ITEMS_PER_PAGE} total={data.total} />
+              <Pagination
+                className="mt-10"
+                limit={ITEMS_PER_PAGE}
+                total={data.total}
+                currentPage={currentPage}
+                paginate={paginate}
+                handleNextClick={handleNextClick}
+                handlePrevClick={handlePrevClick}
+              />
             </>
           ) : (
             <div className="mt-20 w-full flex justify-center">

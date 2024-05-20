@@ -1,24 +1,36 @@
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { useMemo } from 'react';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
-import { usePagination } from '@/hooks/usePagination';
+import { FIRST_PAGE_NUMBER } from '@/constants/pagination';
+import { UsePaginationReturn } from '@/hooks/usePagination';
 
 type Props = {
   limit: number;
   total: number;
   className: string;
-};
+} & UsePaginationReturn;
 
-const PaginationComponent = ({ limit, total, className }: Props) => {
-  const { currentPage, paginate, pageNumbers, firstPage, lastPage, handleNextClick, handlePrevClick } = usePagination({
-    limit,
-    total,
-  });
+const PaginationComponent = ({ limit, total, currentPage, paginate, handleNextClick, handlePrevClick, className }: Props) => {
+  const pageNumbers: number[] = useMemo(
+    () =>
+      Array(Math.ceil(total / limit))
+        .fill(0)
+        .map((_, i) => i + 1),
+    [total, limit],
+  );
+
+  const lastPage = pageNumbers[pageNumbers.length - 1];
 
   return (
     <Pagination className={className ?? ''}>
       <PaginationContent>
-        <PaginationItem className={`cursor-pointer ${currentPage === firstPage ? 'opacity-50' : ''}`}>
-          <PaginationPrevious onClick={handlePrevClick} />
+        <PaginationItem className={`cursor-pointer ${currentPage === FIRST_PAGE_NUMBER ? 'opacity-50' : ''}`}>
+          <PaginationPrevious
+            onClick={() => {
+              if (currentPage === FIRST_PAGE_NUMBER) return;
+              handlePrevClick();
+            }}
+          />
         </PaginationItem>
         {pageNumbers.map(pageNumber => (
           <PaginationItem key={pageNumber}>
@@ -28,7 +40,12 @@ const PaginationComponent = ({ limit, total, className }: Props) => {
           </PaginationItem>
         ))}
         <PaginationItem className={`cursor-pointer ${currentPage === lastPage ? 'opacity-50' : ''}`}>
-          <PaginationNext onClick={handleNextClick} />
+          <PaginationNext
+            onClick={() => {
+              if (currentPage === lastPage) return;
+              handleNextClick();
+            }}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

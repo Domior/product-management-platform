@@ -1,17 +1,19 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Product } from '@prisma/client';
 
 import { prisma } from '@/utils/prismaClient';
 import { apiHandler } from '@/utils/apiHandler';
 import { HTTP_METHODS } from '@/constants/httpMethods';
 import { STATUS_CODES } from '@/constants/statusCodes';
 import { PaginatedResponse } from '@/types/response';
+import { ITEMS_PER_PAGE } from '@/constants/products';
+import { FIRST_PAGE_NUMBER } from '@/constants/pagination';
+import { ProductFull } from '@/types/product';
 
 const getAll = async (req: NextApiRequest, res: NextApiResponse) => {
   const { search, categories, tags, page, limit } = req.query;
 
-  const pageNumber = parseInt(page as string) || 0;
-  const limitNumber = parseInt(limit as string) || 10;
+  const pageNumber = parseInt(page as string) || FIRST_PAGE_NUMBER;
+  const limitNumber = parseInt(limit as string) || ITEMS_PER_PAGE;
 
   const products = await prisma.product.findMany({
     where: {
@@ -37,7 +39,7 @@ const getAll = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       ],
     },
-    skip: (pageNumber - 1) * limitNumber,
+    skip: (pageNumber - FIRST_PAGE_NUMBER) * limitNumber,
     take: limitNumber,
     include: {
       categories: {
@@ -79,7 +81,7 @@ const getAll = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  return res.status(STATUS_CODES.OK).json({ results: products, total, limit: limitNumber, page: pageNumber } as PaginatedResponse<Product>);
+  return res.status(STATUS_CODES.OK).json({ results: products, total, limit: limitNumber, page: pageNumber } as PaginatedResponse<ProductFull>);
 };
 
 export default apiHandler({

@@ -6,7 +6,7 @@ import { PaginatedResponse } from '@/types/response';
 import { ProductType, ProductFull, GetProductsParamsType, EditProductType } from '@/types/product';
 
 class ProductService {
-  async getProducts(params: GetProductsParamsType): Promise<PaginatedResponse<Product>> {
+  async getProducts(params: GetProductsParamsType): Promise<PaginatedResponse<ProductFull>> {
     return await baseInstance.get(APP_ROUTES.PRODUCTS, { params });
   }
   async getOneProduct(id: number): Promise<ProductFull> {

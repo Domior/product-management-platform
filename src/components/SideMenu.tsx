@@ -7,7 +7,6 @@ import { useUser } from '@/hooks/useUser';
 
 const SideMenu = () => {
   const { user } = useUser();
-  console.log(user);
 
   return (
     <nav className="side-menu">
