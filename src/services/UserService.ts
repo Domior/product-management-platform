@@ -1,12 +1,12 @@
-import { User } from '@prisma/client';
-import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
-
-import baseInstance from './baseInstance';
+import { UserFull } from '@/types/users';
+import { APP_ROUTES } from '@/constants/routes';
 import { PaginatedResponse } from '@/types/response';
+import { GetUsersParamsType } from '@/types/users';
+import baseInstance from './baseInstance';
 
 class UserService {
-  async getUsers(): Promise<PaginatedResponse<User>> {
-    return await baseInstance.get(APP_ROUTES.USERS);
+  async getUsers(params: GetUsersParamsType): Promise<PaginatedResponse<UserFull>> {
+    return await baseInstance.get(APP_ROUTES.USERS, { params });
   }
 }
 
