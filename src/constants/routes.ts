@@ -14,6 +14,7 @@ export const APP_ROUTES = {
 export const ADDITIONAL_ROUTES = {
   TAGS: '/tags',
   CATEGORIES: '/categories',
+  PERMISSIONS: '/permissions',
   CREATE: '/create',
   EDIT: '/edit',
 };
