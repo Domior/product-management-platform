@@ -2,7 +2,7 @@ import { UserPermission } from '@prisma/client';
 import { UserFull } from '@/types/users';
 import { APP_ROUTES, ADDITIONAL_ROUTES } from '@/constants/routes';
 import { PaginatedResponse } from '@/types/response';
-import { GetUsersParamsType, ChangeUserPermissionsType } from '@/types/users';
+import { GetUsersParamsType, UpdateUserPermissionsType } from '@/types/users';
 import baseInstance from './baseInstance';
 
 class UserService {
@@ -10,7 +10,7 @@ class UserService {
     return await baseInstance.get(APP_ROUTES.USERS, { params });
   }
 
-  async changeUserPermissions({ userId, body }: ChangeUserPermissionsType): Promise<UserPermission[]> {
+  async updateUserPermissions({ userId, body }: UpdateUserPermissionsType): Promise<UserPermission[]> {
     return await baseInstance.put(`${APP_ROUTES.USERS}/${userId}/${ADDITIONAL_ROUTES.PERMISSIONS}`, body);
   }
 }

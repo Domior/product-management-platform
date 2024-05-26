@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { UserPermission } from '@prisma/client';
 
+import { PageTitle } from '@/components/PageTitle';
 import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import Pagination from '@/components/Pagination';
@@ -81,6 +82,7 @@ const Users = () => {
 
   return (
     <>
+      <PageTitle>Users</PageTitle>
       {!isLoading && data ? (
         <div className="mt-5">
           <UsersTable data={data.results} columns={columns} />

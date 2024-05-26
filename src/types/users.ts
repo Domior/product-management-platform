@@ -6,4 +6,4 @@ export type UserFull = User & {
   permissions: UserPermission[];
 };
 
-export type ChangeUserPermissionsType = { userId: number; body: UserPermission[] };
+export type UpdateUserPermissionsType = { userId: number; body: { permissions: UserPermission[] } };
