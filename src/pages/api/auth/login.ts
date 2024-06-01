@@ -17,5 +17,5 @@ const loginHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default apiHandler({
-  [HTTP_METHODS.POST]: loginHandler,
+  [HTTP_METHODS.POST]: { handler: loginHandler },
 });

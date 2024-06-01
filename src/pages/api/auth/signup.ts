@@ -39,5 +39,5 @@ const signupHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default apiHandler({
-  [HTTP_METHODS.POST]: signupHandler,
+  [HTTP_METHODS.POST]: { handler: signupHandler },
 });

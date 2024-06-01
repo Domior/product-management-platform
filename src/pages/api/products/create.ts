@@ -5,6 +5,7 @@ import { apiHandler } from '@/utils/apiHandler';
 import { HTTP_METHODS } from '@/constants/httpMethods';
 import { STATUS_CODES } from '@/constants/statusCodes';
 import { ProductType } from '@/types/product';
+import { PERMISSIONS } from '@/constants/users';
 
 const create = async (req: NextApiRequest, res: NextApiResponse) => {
   const { title, description, price, categories, tags } = req.body as ProductType;
@@ -38,5 +39,5 @@ const create = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default apiHandler({
-  [HTTP_METHODS.POST]: create,
+  [HTTP_METHODS.POST]: { handler: create, permissions: [PERMISSIONS.CREATE_PRODUCT] },
 });

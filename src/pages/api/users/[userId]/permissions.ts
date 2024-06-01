@@ -47,5 +47,5 @@ const updatePermissions = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default apiHandler({
-  [HTTP_METHODS.PUT]: updatePermissions,
+  [HTTP_METHODS.PUT]: { handler: updatePermissions },
 });
