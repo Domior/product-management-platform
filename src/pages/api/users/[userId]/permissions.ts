@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { UserPermission } from '@prisma/client';
 
 import { prisma } from '@/utils/prismaClient';
 import { apiHandler } from '@/utils/apiHandler';
