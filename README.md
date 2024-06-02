@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Project Requirements
 
-## Getting Started
+`node 20.12.0`
+`npm 10.5.0`
+`next 14.1.4`
+`react ^18`
 
-First, run the development server:
+## Overview
+The Product Management Platform is a web application designed to manage products. Built with Next.js and Prisma, it provides a seamless interface for product management with support for user permissions.
 
+## Installation
+
+**Clone the repository**
+ ```bash
+git clone https://github.com/Domior/product-management-platform.git
+cd product-management-platform
+```
+**Install dependencies**
+```bash
+npm install
+```
+**Set up environment variables**\
+Create a `.env` file based on `.env.example` and configure your database connection and other environment variables.
+
+**Run the development server**
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
+**Open the app in your browser**\
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
+Product Management:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Add new products by filling out the product form.
+- Edit existing products by selecting them from the list.
+- Delete products as needed.
 
-## Learn More
+User Permissions:
 
-To learn more about Next.js, take a look at the following resources:
+- Manage user roles and permissions to control access to different parts and actions of the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Controlling Prisma Migrations
+**Edit Prisma Schema**\
+Make changes to your data model in `prisma/schema.prisma`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+**Generate Migration**\
+After editing the schema, generate a new migration:
+```bash
+npx prisma migrate dev --name <migration_name>
+```
 
-## Deploy on Vercel
+**Apply Migrations**\
+To apply pending migrations, use:
+```bash
+npx prisma migrate deploy
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Introspect Database**\
+If you want to introspect and generate Prisma models based on an existing database schema:
+```bash
+npx prisma db pull
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**Generate Prisma Client**\
+After making changes to the schema or database, regenerate the Prisma Client:
+```bash
+npx prisma generate
+```
