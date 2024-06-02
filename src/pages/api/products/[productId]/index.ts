@@ -4,6 +4,7 @@ import { prisma } from '@/utils/prismaClient';
 import { apiHandler } from '@/utils/apiHandler';
 import { HTTP_METHODS } from '@/constants/httpMethods';
 import { STATUS_CODES } from '@/constants/statusCodes';
+import { PERMISSIONS } from '@/constants/users';
 
 const getOne = async (req: NextApiRequest, res: NextApiResponse) => {
   const { productId } = req.query;
@@ -63,6 +64,6 @@ const deleteOne = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default apiHandler({
-  [HTTP_METHODS.GET]: getOne,
-  [HTTP_METHODS.DELETE]: deleteOne,
+  [HTTP_METHODS.GET]: { handler: getOne },
+  [HTTP_METHODS.DELETE]: { handler: deleteOne, permissions: [PERMISSIONS.DELETE_PRODUCT] },
 });

@@ -15,5 +15,5 @@ const signoutHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default apiHandler({
-  [HTTP_METHODS.DELETE]: signoutHandler,
+  [HTTP_METHODS.DELETE]: { handler: signoutHandler },
 });

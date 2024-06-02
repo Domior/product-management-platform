@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import Cookies from 'js-cookie';
 import { Row } from '@tanstack/react-table';
 import { useQueryClient } from '@tanstack/react-query';
 import { UserPermission } from '@prisma/client';
@@ -12,6 +13,7 @@ import UserService from '@/services/UserService';
 import { useAsync } from '@/hooks/useAsync';
 import { UserFull, UpdateUserPermissionsType } from '@/types/users';
 import { QUERY_KEYS } from '@/constants/users';
+import { COOKIES } from '@/constants/cookies';
 
 type Props = {
   row: Row<UserFull>;
@@ -26,11 +28,12 @@ const ActionsPermissionsCell = ({ row, allPermissions }: Props) => {
 
   const [tempPermissions, setTempPermissions] = useState(permissions);
 
-  const { data, loading: updatingPermissions, execute: executeUpdating } = useAsync<UserPermission[], UpdateUserPermissionsType>(UserService.updateUserPermissions);
+  const { loading: updatingPermissions, execute: executeUpdating } = useAsync<UserPermission[], UpdateUserPermissionsType>(UserService.updateUserPermissions);
 
   const onApplyChanges = async () => {
     await executeUpdating({ userId: row.original.id, body: { permissions: tempPermissions } });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS_LIST] });
+    Cookies.set(COOKIES.PERMISSIONS, JSON.stringify(tempPermissions));
     modalCloseButtonRef.current?.click();
   };
 

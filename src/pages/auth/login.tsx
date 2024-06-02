@@ -14,6 +14,7 @@ import { PageTitle } from '@/components/PageTitle';
 
 import AuthService from '@/services/AuthService';
 import SupabaseService from '@/services/SupabaseService';
+import UserService from '@/services/UserService';
 import { useAsync } from '@/hooks/useAsync';
 import { AUTH_ROUTES, APP_ROUTES } from '@/constants/routes';
 import { COOKIES } from '@/constants/cookies';
@@ -36,10 +37,15 @@ const Login = () => {
 
   useEffect(() => {
     if (data && !error) {
-      SupabaseService.setSession(data.session!).then(() => {
-        Cookies.set(COOKIES.TOKEN, data.session!.access_token);
-        Router.push(APP_ROUTES.PRODUCTS);
-      });
+      SupabaseService.setSession(data.session!)
+        .then(() => {
+          Cookies.set(COOKIES.TOKEN, data.session!.access_token);
+        })
+        .then(async () => {
+          const user = await UserService.getUserByEmail({ email: data.user?.email! });
+          Cookies.set(COOKIES.PERMISSIONS, JSON.stringify(user.permissions));
+          Router.push(APP_ROUTES.PRODUCTS);
+        });
     }
   }, [data, error]);
 

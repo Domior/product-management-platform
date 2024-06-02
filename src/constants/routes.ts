@@ -17,6 +17,8 @@ export const ADDITIONAL_ROUTES = {
   PERMISSIONS: '/permissions',
   CREATE: '/create',
   EDIT: '/edit',
+  EMAIL: '/email',
+  ACCESS_DENIED: '/access-denied',
 };
 
 export const ADMIN_ROUTES = [APP_ROUTES.USERS];

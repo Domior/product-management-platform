@@ -10,6 +10,10 @@ class UserService {
     return await baseInstance.get(APP_ROUTES.USERS, { params });
   }
 
+  async getUserByEmail(params: { email: string }): Promise<UserFull> {
+    return await baseInstance.get(`${APP_ROUTES.USERS}/${ADDITIONAL_ROUTES.EMAIL}`, { params });
+  }
+
   async updateUserPermissions({ userId, body }: UpdateUserPermissionsType): Promise<UserPermission[]> {
     return await baseInstance.put(`${APP_ROUTES.USERS}/${userId}/${ADDITIONAL_ROUTES.PERMISSIONS}`, body);
   }

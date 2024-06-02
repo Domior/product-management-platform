@@ -12,5 +12,5 @@ const getAll = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default apiHandler({
-  [HTTP_METHODS.GET]: getAll,
+  [HTTP_METHODS.GET]: { handler: getAll },
 });

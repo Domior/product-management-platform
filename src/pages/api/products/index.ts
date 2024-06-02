@@ -8,6 +8,7 @@ import { PaginatedResponse } from '@/types/response';
 import { ITEMS_PER_PAGE } from '@/constants/products';
 import { FIRST_PAGE_NUMBER } from '@/constants/pagination';
 import { ProductFull } from '@/types/product';
+import { PERMISSIONS } from '@/constants/users';
 
 const getAll = async (req: NextApiRequest, res: NextApiResponse) => {
   const { search, categories, tags, page, limit } = req.query;
@@ -85,5 +86,5 @@ const getAll = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default apiHandler({
-  [HTTP_METHODS.GET]: getAll,
+  [HTTP_METHODS.GET]: { handler: getAll, permissions: [PERMISSIONS.VIEW_PRODUCTS] },
 });
